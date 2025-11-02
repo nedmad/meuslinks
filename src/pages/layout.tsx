@@ -16,7 +16,7 @@ export default function Layout() {
         setLoading(false);
         naviate("/login");
       })
-      .catch((e) => alert("Falha ao sair"));
+      .catch((e) => alert("Falha ao sair" + e));
   }
   return (
     <>

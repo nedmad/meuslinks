@@ -4,7 +4,6 @@ import {
   deleteDoc,
   doc,
   onSnapshot,
-  orderBy,
   query,
 } from "firebase/firestore";
 import { useEffect, useState, type FormEvent } from "react";

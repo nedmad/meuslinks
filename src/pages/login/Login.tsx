@@ -19,7 +19,7 @@ export default function Login() {
         navigate("/links");
       })
       .catch((e) => {
-        alert("Usuario nao encontrado");
+        alert("Usuario nao encontrado" + e);
       });
   }
 
@@ -38,7 +38,7 @@ export default function Login() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <label for="floatingInput">Email address</label>
+            <label htmlFor="floatingInput">Email address</label>
           </div>
           <div className="form-floating">
             <input
@@ -49,7 +49,7 @@ export default function Login() {
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
             />
-            <label for="floatingPassword">Password</label>
+            <label htmlFor="floatingPassword">Password</label>
           </div>
           <button type="submit" className="btn btn-primary w-100 p-3 mt-4">
             <span className="fw-bold">Login</span>
