@@ -24,12 +24,11 @@ export default function MeusLinks() {
   const [colorInpput, setColorInpput] = useState("black");
   const [colorTextLink, setColorTextLink] = useState("lightcyan");
   const [meusLinks, setMeusLink] = useState<MeusLinksInterFace[]>([]);
-  const [loading, setLoading] = useState(false);
   const [loadingLinks, setLoadingLinks] = useState(false);
 
   async function inserirLink(event: FormEvent) {
     event.preventDefault();
-    setLoading(true);
+    setLoadingLinks(true);
     await addDoc(collection(db, "links"), {
       name: nameLink,
       colorInput: colorInpput,
@@ -37,7 +36,7 @@ export default function MeusLinks() {
       link: link,
     })
       .then(() => {
-        setLoading(false);
+        setLoadingLinks(false);
 
         setNameLink("");
         setLink("");
@@ -66,7 +65,6 @@ export default function MeusLinks() {
         });
       });
       setLoadingLinks(false);
-
       setMeusLink(arrayLinks);
     });
     return () => {
@@ -115,13 +113,14 @@ export default function MeusLinks() {
                 onChange={(e) => setColorTextLink(e.target.value)}
               />
             </div>
-            {loading ? (
-              <Loading />
-            ) : (
-              <button type="submit" className="btn btn-primary w-100 p-3">
-                <span className="fw-bold">Incluir</span>
-              </button>
-            )}
+
+            <button
+              type="submit"
+              disabled={loadingLinks}
+              className="btn btn-primary w-100 p-3"
+            >
+              <span className="fw-bold">Incluir</span>
+            </button>
           </div>
         </form>
         <section className="meuLink mt-4">
@@ -136,32 +135,35 @@ export default function MeusLinks() {
               <span className="fw-bold">{nameLink}</span>
             </a>
           )}
-          {loadingLinks && <Loading />}
-          {meusLinks.map((lin) => (
-            <section
-              key={lin.id}
-              className="btn  w-100 p-3 mt-2 d-flex justify-content-between justify-content-center align-items-center"
-              style={{
-                color: lin.colorLink,
-                backgroundColor: lin.colorInput,
-              }}
-            >
-              <a
-                className="text-decoration-none"
-                style={{ color: lin.colorLink }}
-                target="_blank"
-                href={lin.link}
+          {loadingLinks ? (
+            <Loading />
+          ) : (
+            meusLinks.map((lin) => (
+              <section
+                key={lin.id}
+                className="btn  w-100 p-3 mt-2 d-flex justify-content-between justify-content-center align-items-center"
+                style={{
+                  color: lin.colorLink,
+                  backgroundColor: lin.colorInput,
+                }}
               >
-                <span className="fw-bold">{lin.name}</span>
-              </a>
-              <button
-                onClick={() => deletarLink(lin.id)}
-                className="btn btn-danger"
-              >
-                Deletar
-              </button>
-            </section>
-          ))}
+                <a
+                  className="text-decoration-none"
+                  style={{ color: lin.colorLink }}
+                  target="_blank"
+                  href={lin.link}
+                >
+                  <span className="fw-bold">{lin.name}</span>
+                </a>
+                <button
+                  onClick={() => deletarLink(lin.id)}
+                  className="btn btn-danger"
+                >
+                  Deletar
+                </button>
+              </section>
+            ))
+          )}
         </section>
       </section>
     </>
