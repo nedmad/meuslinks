@@ -25,6 +25,7 @@ export default function MeusLinks() {
   const [colorTextLink, setColorTextLink] = useState("lightcyan");
   const [meusLinks, setMeusLink] = useState<MeusLinksInterFace[]>([]);
   const [loading, setLoading] = useState(false);
+  const [loadingLinks, setLoadingLinks] = useState(false);
 
   async function inserirLink(event: FormEvent) {
     event.preventDefault();
@@ -51,7 +52,7 @@ export default function MeusLinks() {
   useEffect(() => {
     const collecao = collection(db, "links");
     const fazerQuery = query(collecao);
-
+    setLoadingLinks(true);
     const onsub = onSnapshot(fazerQuery, (snapshot) => {
       const arrayLinks = [] as MeusLinksInterFace[];
 
@@ -64,6 +65,8 @@ export default function MeusLinks() {
           link: linksQuery.data().link,
         });
       });
+      setLoadingLinks(false);
+
       setMeusLink(arrayLinks);
     });
     return () => {
@@ -133,6 +136,7 @@ export default function MeusLinks() {
               <span className="fw-bold">{nameLink}</span>
             </a>
           )}
+          {loadingLinks && <Loading />}
           {meusLinks.map((lin) => (
             <section
               key={lin.id}
@@ -144,6 +148,7 @@ export default function MeusLinks() {
             >
               <a
                 className="text-decoration-none"
+                style={{ color: lin.colorLink }}
                 target="_blank"
                 href={lin.link}
               >
